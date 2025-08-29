@@ -48,21 +48,18 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
-        // Conectar Widgets
         txtVersiculo = findViewById(R.id.txtVersiculo);
         btnGerar = findViewById(R.id.btnGerar);
         imgIcone = findViewById(R.id.imgIcone);
         spnCategoria = findViewById(R.id.spnCategoria);
         progressBar2 = findViewById(R.id.progressBar2);
 
-        // Configurar opções do Spinner
         String[] categorias = {"Aleatório", "Fé", "Esperança", "Amor"};
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_item, categorias);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spnCategoria.setAdapter(adapter);
 
-        // Ação do botão Gerar
         btnGerar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -71,18 +68,13 @@ public class MainActivity extends AppCompatActivity {
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        // 3. Selecionar um versículo aleatório
                         Random random = new Random();
                         int index = random.nextInt(versiculos.length);
                         String versiculo = versiculos[index];
-
-                        // 4. Exibir o versículo (sem colchetes!)
                         txtVersiculo.setText(versiculo);
-
-                        // 5. Esconder o ProgressBar
                         progressBar2.setVisibility(View.GONE);
                     }
-                }, 600); // Tempo de simulação: 600ms
+                }, 600);
             }
         });
     }
