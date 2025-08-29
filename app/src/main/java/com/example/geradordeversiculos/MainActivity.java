@@ -1,0 +1,89 @@
+package com.example.geradordeversiculos;
+
+import android.os.Bundle;
+import android.os.Handler;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.Spinner;
+import android.widget.TextView;
+
+import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
+
+import java.util.Random;
+
+public class MainActivity extends AppCompatActivity {
+
+    TextView txtVersiculo;
+    Button btnGerar;
+    ImageView imgIcone;
+    Spinner spnCategoria;
+    ProgressBar progressBar2;
+
+    String[] versiculos = {
+            "O Senhor é meu pastor, nada me faltará. - Salmo 23:1",
+            "Posso todas as coisas naquele que me fortalece. - Filipenses 4:13",
+            "Porque Deus amou o mundo de tal maneira que deu o seu Filho unigênito. - João 3:16",
+            "Confia no Senhor de todo o teu coração. - Provérbios 3:5",
+            "A paz deixo com vocês; a minha paz dou a vocês. - João 14:27",
+            "Tudo posso naquele que me fortalece. - Filipenses 4:13",
+            "A graça do Senhor Jesus Cristo esteja com o espírito de vocês. - Apocalipse 22:21"
+    };
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
+        setContentView(R.layout.activity_main);
+
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
+        });
+
+        // Conectar Widgets
+        txtVersiculo = findViewById(R.id.txtVersiculo);
+        btnGerar = findViewById(R.id.btnGerar);
+        imgIcone = findViewById(R.id.imgIcone);
+        spnCategoria = findViewById(R.id.spnCategoria);
+        progressBar2 = findViewById(R.id.progressBar2);
+
+        // Configurar opções do Spinner
+        String[] categorias = {"Aleatório", "Fé", "Esperança", "Amor"};
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_spinner_item, categorias);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spnCategoria.setAdapter(adapter);
+
+        // Ação do botão Gerar
+        btnGerar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                progressBar2.setVisibility(View.VISIBLE);
+
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        // 3. Selecionar um versículo aleatório
+                        Random random = new Random();
+                        int index = random.nextInt(versiculos.length);
+                        String versiculo = versiculos[index];
+
+                        // 4. Exibir o versículo (sem colchetes!)
+                        txtVersiculo.setText(versiculo);
+
+                        // 5. Esconder o ProgressBar
+                        progressBar2.setVisibility(View.GONE);
+                    }
+                }, 600); // Tempo de simulação: 600ms
+            }
+        });
+    }
+}
