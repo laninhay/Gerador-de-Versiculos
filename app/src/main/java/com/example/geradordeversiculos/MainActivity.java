@@ -16,6 +16,8 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
@@ -26,15 +28,7 @@ public class MainActivity extends AppCompatActivity {
     Spinner spnCategoria;
     ProgressBar progressBar2;
 
-    String[] versiculos = {
-            "O Senhor é meu pastor, nada me faltará. - Salmo 23:1",
-            "Posso todas as coisas naquele que me fortalece. - Filipenses 4:13",
-            "Porque Deus amou o mundo de tal maneira que deu o seu Filho unigênito. - João 3:16",
-            "Confia no Senhor de todo o teu coração. - Provérbios 3:5",
-            "A paz deixo com vocês; a minha paz dou a vocês. - João 14:27",
-            "Tudo posso naquele que me fortalece. - Filipenses 4:13",
-            "A graça do Senhor Jesus Cristo esteja com o espírito de vocês. - Apocalipse 22:21"
-    };
+    Map<String, String[]> versiculosPorCategoria = new HashMap<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +54,29 @@ public class MainActivity extends AppCompatActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spnCategoria.setAdapter(adapter);
 
+        versiculosPorCategoria.put("Aleatório", new String[]{
+                "O Senhor é meu pastor, nada me faltará. - Salmo 23:1",
+                "Posso todas as coisas naquele que me fortalece. - Filipenses 4:13",
+                "Porque Deus amou o mundo de tal maneira que deu o seu Filho unigênito. - João 3:16",
+                "Confia no Senhor de todo o teu coração. - Provérbios 3:5",
+                "A paz deixo com vocês; a minha paz dou a vocês. - João 14:27",
+                "Tudo posso naquele que me fortalece. - Filipenses 4:13",
+                "A graça do Senhor Jesus seja com todos. Amém. - Apocalipse 22:21"
+        });
+
+        versiculosPorCategoria.put("Fé", new String[]{
+                "Confia no Senhor de todo o teu coração. - Provérbios 3:5",
+                "Tudo posso naquele que me fortalece. - Filipenses 4:13"
+        });
+
+        versiculosPorCategoria.put("Esperança", new String[]{
+                "A paz deixo com vocês; a minha paz dou a vocês. - João 14:27"
+        });
+
+        versiculosPorCategoria.put("Amor", new String[]{
+                "Porque Deus amou o mundo de tal maneira que deu o seu Filho unigênito. - João 3:16"
+        });
+
         btnGerar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -68,9 +85,16 @@ public class MainActivity extends AppCompatActivity {
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
+
+                        String categoriaSelecionada = spnCategoria.getSelectedItem().toString();
+                        String[] listaVersiculos = versiculosPorCategoria.get(categoriaSelecionada);
+                        if (categoriaSelecionada.equals("Aleatório")) {
+                            listaVersiculos = versiculosPorCategoria.get("Aleatório");
+                        }
+
                         Random random = new Random();
-                        int index = random.nextInt(versiculos.length);
-                        String versiculo = versiculos[index];
+                        int index = random.nextInt(listaVersiculos.length);
+                        String versiculo = listaVersiculos[index];
                         txtVersiculo.setText(versiculo);
                         progressBar2.setVisibility(View.GONE);
                     }
